@@ -2,7 +2,7 @@
 >A small golang package to help you use your insight API.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/hunterlong/insight)](https://goreportcard.com/report/github.com/hunterlong/insight)
-[![Build Status](https://travis-ci.org/hunterlong/insight.svg?branch=master)](https://travis-ci.org/hunterlong/insight)
+[![Build Status](https://travis-ci.com/hunterlong/insight.svg?branch=master)](https://travis-ci.com/hunterlong/insight)
 [![Godoc](https://godoc.org/github.com/hunterlong/insight?status.svg)](https://godoc.org/github.com/hunterlong/insight)
 
 ### Connect to Insight API

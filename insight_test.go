@@ -5,12 +5,16 @@ import (
 	"testing"
 )
 
+const (
+	INSIGHT_API = "https://btc.coinapp.io/api"
+)
+
 var (
 	tester *Insight
 )
 
 func TestNew(t *testing.T) {
-	tester = New("https://btc.elementchains.com/api")
+	tester = New(INSIGHT_API)
 	assert.NotNil(t, tester)
 }
 
@@ -40,12 +44,12 @@ func TestBTCBlockTxs(t *testing.T) {
 	block, err := tester.BlockTransactions("00000000000000000009119366319b9ec9e3b1349d76b21bf73dbcb0f0528c91")
 	assert.Nil(t, err)
 	assert.Equal(t, 2826, len(block.Transactions))
-	assert.Equal(t, 6331123, len(block.ToJSON()))
+	assert.Equal(t, 6382581, len(block.ToJSON()))
 }
 
 func TestBTCBlockTxs2(t *testing.T) {
 	block, err := tester.BlockTransactions("00000000000000000024197edf087521335c9f66447580bc40e0a053d23341da")
 	assert.Nil(t, err)
 	assert.Equal(t, 2433, len(block.Transactions))
-	assert.Equal(t, 6183899, len(block.ToJSON()))
+	assert.Equal(t, 6233963, len(block.ToJSON()))
 }
