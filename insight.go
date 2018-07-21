@@ -12,7 +12,7 @@ type insight struct {
 	Timeout  int
 }
 
-// Create a new Insight pointer for query your database
+// New insight pointer will query your insight API, requires insight /api endpoint
 func New(endpoint string) *insight {
 	return &insight{Endpoint: endpoint}
 }
