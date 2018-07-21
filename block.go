@@ -90,6 +90,9 @@ func (b *block) pages() int {
 func (b *block) hash() (string, error) {
 	url := fmt.Sprintf("%v/block-index/%v", b.insight.Endpoint, b.Height)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return "", err
+	}
 	var hash *blockHash
 	err = json.Unmarshal(body, &hash)
 	b.Hash = hash.BlockHash
