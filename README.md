@@ -1,5 +1,5 @@
 # Bitcore Insight API - Golang
->A small golang package to help you use your insight API.
+>A small golang package to help you use your bitcore insight API with Golang.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/hunterlong/insight)](https://goreportcard.com/report/github.com/hunterlong/insight)
 [![Build Status](https://travis-ci.com/hunterlong/insight.svg?branch=master)](https://travis-ci.com/hunterlong/insight)
@@ -11,7 +11,8 @@
 
 bitcoin := insight.New("https://insight.bitpay.com/api")
 
-// err := bitcoin.Ping()
+// err := bitcoin.Ping()  // test insight API connection
+// bitcoin.SetThreads(16) // set multiple threads to download transactions faster
 ```
 
 ### Get Block Hash

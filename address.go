@@ -24,16 +24,14 @@ func (a *address) Balance() float64 {
 	if a.balancesQuery == nil {
 		a.balancesQuery = a.balanceQuery()
 	}
-	btc := float64(a.BalanceSat) * 0.000000008
-	return btc
+	return a.balancesQuery.Balance
 }
 
 func (a *address) PendingBalance() float64 {
 	if a.balancesQuery == nil {
 		a.balancesQuery = a.balanceQuery()
 	}
-	btc := float64(a.UnconfirmedBalanceSat) * 0.000000008
-	return btc
+	return float64(a.balancesQuery.UnconfirmedBalance) * 0.000000008
 }
 
 func (a *address) balanceQuery() *balancesQuery {
@@ -47,6 +45,8 @@ func (a *address) balanceQuery() *balancesQuery {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Println(balance.Balance)
 	a.balancesQuery = balance
 	return balance
 }

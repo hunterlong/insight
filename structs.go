@@ -55,7 +55,7 @@ type insightScriptPubKey struct {
 	Type      string   `json:"type"`
 }
 
-type sync struct {
+type btcSync struct {
 	Status           string      `json:"status"`
 	BlockChainHeight int         `json:"blockChainHeight"`
 	SyncPercentage   int         `json:"syncPercentage"`

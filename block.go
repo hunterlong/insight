@@ -3,6 +3,7 @@ package insight
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
 )
 
 type block struct {
@@ -53,12 +54,20 @@ func (b *block) latestBlock() *block {
 
 func (b *block) Transactions() ([]*blockTx, error) {
 	var trxs []*blockTx
+	wg := new(sync.WaitGroup)
 	for p := 0; p <= b.Pages; p++ {
-		bTrax, _ := b.blockTransactions(b.Hash, p)
-		for _, tx := range bTrax.BlockTxs {
-			trxs = append(trxs, tx)
-		}
+		wg.Add(1)
+		b.insight.ch <- struct{}{}
+		go func(p int, wg *sync.WaitGroup) {
+			bTrax, _ := b.blockTransactions(b.Hash, p)
+			for _, tx := range bTrax.BlockTxs {
+				trxs = append(trxs, tx)
+			}
+			<-b.insight.ch
+			wg.Done()
+		}(p, wg)
 	}
+	wg.Wait()
 	b.transactions = trxs
 	return trxs, nil
 }

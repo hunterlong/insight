@@ -14,6 +14,8 @@ func main() {
 		panic(err)
 	}
 
+	bitcoin.SetThreads(4)
+
 	block := bitcoin.NewBlock(nil)
 
 	address := bitcoin.NewAddress("162yoHmpvqCq5SztkKaiEd5LiPyxcPLYzu")
@@ -43,5 +45,14 @@ func main() {
 	fmt.Println("Address Balance: ", address.Balance())
 	fmt.Println("Address UTXOs: ", len(address.UTXO()))
 	fmt.Println("Address Total Sent: ", address.TotalSent)
+
+	bitcoin.SetThreads(16)
+
+	block2 := bitcoin.NewBlock(532924)
+
+	transactions, _ = block2.Transactions()
+
+	fmt.Println("Block: ", block2.Height)
+	fmt.Println("Block Transactions: ", len(transactions))
 
 }

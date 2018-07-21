@@ -23,8 +23,8 @@ func TestNew(t *testing.T) {
 }
 
 func TestNewAddress(t *testing.T) {
-	addr = tester.NewAddress("1Hz96kJKF2HLPGY15JWLB5m9qGNxvt8tHJ")
-	assert.Equal(t, float64(121.13078233600001), addr.Balance())
+	addr = tester.NewAddress("37TmaiDdMwdNM9J5iKDcWdPVT1Zi8wNYJH")
+	assert.Equal(t, float64(0.10384547), addr.Balance())
 }
 
 func TestNewBlockID(t *testing.T) {
@@ -50,8 +50,8 @@ func TestNewBlockHash(t *testing.T) {
 
 func TestAddressUTXO(t *testing.T) {
 	utxo := addr.UTXO()
-	assert.Equal(t, 12, len(utxo))
-	assert.Equal(t, "027cb74ac6b9e465bd95d31e38c2aa4f8a8c46ede5b399a80e35bb6bc7e6384a", utxo[0].Txid)
+	assert.Equal(t, 1, len(utxo))
+	assert.Equal(t, "66e541fd4eebc74c48a5bf0b8ee036e5dd909c7f4ffbb2cefe4cb66498bdbd43", utxo[0].Txid)
 }
 
 func TestSync(t *testing.T) {
@@ -71,14 +71,32 @@ func TestLatestBlock(t *testing.T) {
 }
 
 func TestAddressTransactions(t *testing.T) {
-	addressTrx := tester.NewAddress("1KWaj9LHXyLBzGU1Q5rK5CoZwDBANFksgf")
+	addressTrx := tester.NewAddress("37TmaiDdMwdNM9J5iKDcWdPVT1Zi8wNYJH")
 	transactions := addressTrx.Transactions()
-	assert.Equal(t, 2, len(transactions))
+	assert.Equal(t, 3, len(transactions))
 }
 
 func TestBTCBlockTxs(t *testing.T) {
 	blockTransactions, err := blk.Transactions()
 	assert.Nil(t, err)
 	assert.Equal(t, 27, len(blockTransactions))
+	assert.NotZero(t, len(blk.ToJSON()))
+}
+
+func TestBTCBlockTxs2(t *testing.T) {
+	blk = tester.NewBlock(532923)
+	blk.insight.SetThreads(8)
+	blockTransactions, err := blk.Transactions()
+	assert.Nil(t, err)
+	assert.Equal(t, 985, len(blockTransactions))
+	assert.NotZero(t, len(blk.ToJSON()))
+}
+
+func TestBTCBlockTxs3(t *testing.T) {
+	blk = tester.NewBlock(532921)
+	blk.insight.SetThreads(16)
+	blockTransactions, err := blk.Transactions()
+	assert.Nil(t, err)
+	assert.Equal(t, 2457, len(blockTransactions))
 	assert.NotZero(t, len(blk.ToJSON()))
 }

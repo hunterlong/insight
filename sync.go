@@ -6,18 +6,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (i *insight) Sync() *sync {
+func (i *insight) Sync() *btcSync {
 	url := fmt.Sprintf("%v/sync", i.Endpoint)
 	body, err := httpMethod(url, nil)
 	if err != nil {
 		return nil
 	}
-	var sync *sync
-	err = json.Unmarshal(body, &sync)
+	var btcsync *btcSync
+	err = json.Unmarshal(body, &btcsync)
 	if err != nil {
 		panic(err)
 	}
-	return sync
+	return btcsync
 }
 
 func (i *insight) Peers() *peers {
@@ -37,7 +37,7 @@ func (i *insight) Peers() *peers {
 func (i *insight) Ping() error {
 	sync := i.Sync()
 	if sync == nil {
-		return errors.New("could not fetch latest sync url")
+		return errors.New("could not fetch latest btcSync url")
 	}
 	return nil
 }
