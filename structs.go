@@ -6,10 +6,10 @@ type blockHash struct {
 
 type blockJson struct {
 	Pages        int            `json:"pagesTotal"`
-	Transactions []*Transaction `json:"txs"`
+	Transactions []*transaction `json:"txs"`
 }
 
-type Transaction struct {
+type transaction struct {
 	Txid     string `json:"txid"`
 	Version  int    `json:"version"`
 	Locktime int    `json:"locktime"`
@@ -55,7 +55,7 @@ type InsightScriptPubKey struct {
 	Type      string   `json:"type"`
 }
 
-type Sync struct {
+type sync struct {
 	Status           string      `json:"status"`
 	BlockChainHeight int         `json:"blockChainHeight"`
 	SyncPercentage   int         `json:"syncPercentage"`
@@ -64,12 +64,12 @@ type Sync struct {
 	Type             string      `json:"type"`
 }
 
-type BlockTransactions struct {
+type blockTransactions struct {
 	PagesTotal int        `json:"pagesTotal"`
-	BlockTxs   []*BlockTx `json:"txs"`
+	BlockTxs   []*blockTx `json:"txs"`
 }
 
-type BlockTx struct {
+type blockTx struct {
 	Txid     string `json:"txid"`
 	Version  int    `json:"version"`
 	Locktime int    `json:"locktime"`

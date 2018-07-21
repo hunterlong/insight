@@ -9,10 +9,10 @@ type Block struct {
 	Hash    string
 	Height  int
 	Pages   int
-	insight *Insight
+	insight *insight
 }
 
-func (a *Insight) NewBlock(id interface{}) *Block {
+func (a *insight) NewBlock(id interface{}) *Block {
 	b := new(Block)
 	b.insight = a
 	switch v := id.(type) {
@@ -33,6 +33,14 @@ func (a *Insight) NewBlock(id interface{}) *Block {
 	return nil
 }
 
+func (b *Block) IsLatest() bool {
+	sync := b.insight.Sync()
+	if sync.Height == b.Height {
+		return true
+	}
+	return false
+}
+
 func (b *Block) latestBlock() *Block {
 	sync := b.insight.Sync()
 	b.Height = sync.Height
@@ -42,8 +50,8 @@ func (b *Block) latestBlock() *Block {
 	return b
 }
 
-func (b *Block) Transactions() ([]*BlockTx, error) {
-	var trxs []*BlockTx
+func (b *Block) Transactions() ([]*blockTx, error) {
+	var trxs []*blockTx
 	for p := 0; p <= b.Pages; p++ {
 		bTrax, _ := b.blockTransactions(b.Hash, p)
 		for _, tx := range bTrax.BlockTxs {
@@ -53,10 +61,10 @@ func (b *Block) Transactions() ([]*BlockTx, error) {
 	return trxs, nil
 }
 
-func (b *Block) blockTransactions(hash string, page int) (*BlockTransactions, error) {
+func (b *Block) blockTransactions(hash string, page int) (*blockTransactions, error) {
 	url := fmt.Sprintf("%v/txs/?block=%v&pageNum=%v", b.insight.Endpoint, hash, page)
 	body, err := httpMethod(url, nil)
-	var block *BlockTransactions
+	var block *blockTransactions
 	err = json.Unmarshal(body, &block)
 	if err != nil {
 		panic(err)

@@ -6,12 +6,12 @@ import (
 )
 
 type Address struct {
-	insight *Insight
+	insight *insight
 	Address string
 	*balancesQuery
 }
 
-func (a *Insight) NewAddress(address string) *Address {
+func (a *insight) NewAddress(address string) *Address {
 	return &Address{insight: a, Address: address}
 }
 

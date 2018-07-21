@@ -7,13 +7,13 @@ import (
 	"time"
 )
 
-type Insight struct {
+type insight struct {
 	Endpoint string
 	Timeout  int
 }
 
-func New(endpoint string) *Insight {
-	return &Insight{Endpoint: endpoint}
+func New(endpoint string) *insight {
+	return &insight{Endpoint: endpoint}
 }
 
 func httpMethod(url string, data []byte) ([]byte, error) {

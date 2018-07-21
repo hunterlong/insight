@@ -6,10 +6,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (i *Insight) Sync() *Sync {
+func (i *insight) Sync() *sync {
 	url := fmt.Sprintf("%v/sync", i.Endpoint)
 	body, err := httpMethod(url, nil)
-	var sync *Sync
+	var sync *sync
 	err = json.Unmarshal(body, &sync)
 	if err != nil {
 		panic(err)
@@ -17,7 +17,7 @@ func (i *Insight) Sync() *Sync {
 	return sync
 }
 
-func (i *Insight) Peers() *Peers {
+func (i *insight) Peers() *Peers {
 	url := fmt.Sprintf("%v/peer", i.Endpoint)
 	body, err := httpMethod(url, nil)
 	var peers *Peers
@@ -28,7 +28,7 @@ func (i *Insight) Peers() *Peers {
 	return peers
 }
 
-func (i *Insight) Ping() error {
+func (i *insight) Ping() error {
 	sync := i.Sync()
 	if sync == nil {
 		return errors.New("could not fetch latest sync url")
@@ -36,7 +36,7 @@ func (i *Insight) Ping() error {
 	return nil
 }
 
-func (i *Insight) LatestBlock() int {
+func (i *insight) LatestBlock() int {
 	sync := i.Sync()
 	if sync == nil {
 		return 0
@@ -44,7 +44,7 @@ func (i *Insight) LatestBlock() int {
 	return sync.Height
 }
 
-func (i *Insight) Synced() bool {
+func (i *insight) Synced() bool {
 	sync := i.Sync()
 	if sync == nil {
 		return false
@@ -55,7 +55,7 @@ func (i *Insight) Synced() bool {
 	return false
 }
 
-func (i *Insight) SyncPercent() float64 {
+func (i *insight) SyncPercent() float64 {
 	sync := i.Sync()
 	if sync == nil {
 		return 0

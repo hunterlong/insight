@@ -10,7 +10,7 @@ const (
 )
 
 var (
-	tester      *Insight
+	tester      *insight
 	address     *Address
 	block       *Block
 	block2      *Block
