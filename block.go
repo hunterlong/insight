@@ -64,6 +64,9 @@ func (b *block) Transactions() ([]*blockTx, error) {
 func (b *block) blockTransactions(hash string, page int) (*blockTransactions, error) {
 	url := fmt.Sprintf("%v/txs/?block=%v&pageNum=%v", b.insight.Endpoint, hash, page)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return nil, err
+	}
 	var block *blockTransactions
 	err = json.Unmarshal(body, &block)
 	if err != nil {
@@ -74,7 +77,10 @@ func (b *block) blockTransactions(hash string, page int) (*blockTransactions, er
 
 func (b *block) pages() int {
 	url := fmt.Sprintf("%v/txs/?block=%v", b.insight.Endpoint, b.Hash)
-	body, _ := httpMethod(url, nil)
+	body, err := httpMethod(url, nil)
+	if err != nil {
+		return 0
+	}
 	var blkjson *blockJson
 	json.Unmarshal(body, &blkjson)
 	b.Pages = blkjson.Pages

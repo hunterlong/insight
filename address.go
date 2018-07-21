@@ -38,6 +38,9 @@ func (a *address) PendingBalance() float64 {
 func (a *address) balanceQuery() *balancesQuery {
 	url := fmt.Sprintf("%v/addr/%v", a.insight.Endpoint, a.address)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return nil
+	}
 	var balance *balancesQuery
 	err = json.Unmarshal(body, &balance)
 	if err != nil {
@@ -50,6 +53,9 @@ func (a *address) balanceQuery() *balancesQuery {
 func (a *address) UTXO() []*utxos {
 	url := fmt.Sprintf("%v/addr/%v/utxo", a.insight.Endpoint, a.address)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return nil
+	}
 	var utxos []*utxos
 	err = json.Unmarshal(body, &utxos)
 	if err != nil {
@@ -73,6 +79,9 @@ func (a *address) Transactions() []*addressTxs {
 func (a *address) txPages() int {
 	url := fmt.Sprintf("%v/txs?address=%v", a.insight.Endpoint, a.address)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return 0
+	}
 	var txs *addressTransactions
 	err = json.Unmarshal(body, &txs)
 	if err != nil {
@@ -84,10 +93,13 @@ func (a *address) txPages() int {
 func (a *address) transactions(page int) []*addressTxs {
 	url := fmt.Sprintf("%v/txs?address=%v&pageNum=%v", a.insight.Endpoint, a.address, page)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return nil
+	}
 	var txs *addressTransactions
 	err = json.Unmarshal(body, &txs)
 	if err != nil {
-		panic(err)
+		return nil
 	}
 	return txs.Txs
 }

@@ -9,6 +9,9 @@ import (
 func (i *insight) Sync() *sync {
 	url := fmt.Sprintf("%v/sync", i.Endpoint)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return nil
+	}
 	var sync *sync
 	err = json.Unmarshal(body, &sync)
 	if err != nil {
@@ -20,6 +23,9 @@ func (i *insight) Sync() *sync {
 func (i *insight) Peers() *peers {
 	url := fmt.Sprintf("%v/peer", i.Endpoint)
 	body, err := httpMethod(url, nil)
+	if err != nil {
+		return nil
+	}
 	var peers *peers
 	err = json.Unmarshal(body, &peers)
 	if err != nil {
