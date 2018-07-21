@@ -17,6 +17,17 @@ func (i *Insight) Sync() *Sync {
 	return sync
 }
 
+func (i *Insight) Peers() *Peers {
+	url := fmt.Sprintf("%v/peer", i.Endpoint)
+	body, err := httpMethod(url, nil)
+	var peers *Peers
+	err = json.Unmarshal(body, &peers)
+	if err != nil {
+		panic(err)
+	}
+	return peers
+}
+
 func (i *Insight) Ping() error {
 	sync := i.Sync()
 	if sync == nil {
@@ -50,4 +61,10 @@ func (i *Insight) SyncPercent() float64 {
 		return 0
 	}
 	return float64(sync.SyncPercentage)
+}
+
+type Peers struct {
+	Connected bool   `json:"connected"`
+	Host      string `json:"host"`
+	Port      *int   `json:"port"`
 }

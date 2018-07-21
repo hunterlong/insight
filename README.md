@@ -16,16 +16,15 @@ bitcoin := insight.New("https://insight.bitpay.com/api")
 
 ### Get Block Hash
 ```go
-hash := bitcoin.BlockHash(532833)
-// 0000000000000000003221e76df18226231f8e33694f40318051ec688decd6b0
+block := bitcoin.NewBlock(532833) // you can use Block Height
+block := bitcoin.NewBlock("0000000000000000003221e76df18226231f8e33694f40318051ec688decd6b0") // or hash
+block := bitcoin.NewBlock(nil) // or get the latest block
 ```
 
 ### Fetch Bitcoin Block
 ```go
-hash := "0000000000000000003221e76df18226231f8e33694f40318051ec688decd6b0"
-block := bitcoin.BlockTransactions(hash)
-
-// block.ToJSON()
+transactions := block.Transactions()
+// transactions.ToJSON()
 ```
 
 ### Get Balance for Address
@@ -39,3 +38,9 @@ balance := address.Balance()
 utxos := address.UTXO()
 ```
 
+### Get Server Sync Status
+```go
+sync := bitcoin.Sync()
+// sync.Status
+// sync.BlockChainHeight
+```
