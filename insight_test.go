@@ -24,7 +24,7 @@ func TestNew(t *testing.T) {
 
 func TestNewAddress(t *testing.T) {
 	addr = tester.NewAddress("1Hz96kJKF2HLPGY15JWLB5m9qGNxvt8tHJ")
-	assert.Equal(t, float64(111.068415688), addr.Balance())
+	assert.Equal(t, float64(121.13078233600001), addr.Balance())
 }
 
 func TestNewBlockID(t *testing.T) {
