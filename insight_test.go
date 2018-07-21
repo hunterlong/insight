@@ -50,8 +50,8 @@ func TestNewBlockHash(t *testing.T) {
 
 func TestAddressUTXO(t *testing.T) {
 	utxo := addr.UTXO()
-	assert.Equal(t, 11, len(utxo))
-	assert.Equal(t, "0ba99fcc7b9e7b5991394320d59293d66c8d787175c1a0166de90737706a51f1", utxo[0].Txid)
+	assert.Equal(t, 12, len(utxo))
+	assert.Equal(t, "027cb74ac6b9e465bd95d31e38c2aa4f8a8c46ede5b399a80e35bb6bc7e6384a", utxo[0].Txid)
 }
 
 func TestSync(t *testing.T) {
