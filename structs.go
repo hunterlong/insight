@@ -27,7 +27,7 @@ type transaction struct {
 		Value           float64     `json:"value"`
 		DoubleSpentTxID interface{} `json:"doubleSpentTxID"`
 	} `json:"vin"`
-	Vout          []*InsightVout `json:"vout"`
+	Vout          []*insightVout `json:"vout"`
 	Blockhash     string         `json:"blockhash"`
 	Blockheight   int            `json:"blockheight"`
 	Confirmations int            `json:"confirmations"`
@@ -39,16 +39,16 @@ type transaction struct {
 	Fees          float64        `json:"fees"`
 }
 
-type InsightVout struct {
+type insightVout struct {
 	Value        string               `json:"value"`
 	N            int                  `json:"n"`
-	ScriptPubKey *InsightScriptPubKey `json:"scriptPubKey"`
+	ScriptPubKey *insightScriptPubKey `json:"scriptPubKey"`
 	SpentTxID    interface{}          `json:"spentTxId"`
 	SpentIndex   interface{}          `json:"spentIndex"`
 	SpentHeight  interface{}          `json:"spentHeight"`
 }
 
-type InsightScriptPubKey struct {
+type insightScriptPubKey struct {
 	Hex       string   `json:"hex"`
 	Asm       string   `json:"asm"`
 	Addresses []string `json:"addresses"`

@@ -5,15 +5,15 @@ import (
 	"fmt"
 )
 
-type Block struct {
+type block struct {
 	Hash    string
 	Height  int
 	Pages   int
 	insight *insight
 }
 
-func (a *insight) NewBlock(id interface{}) *Block {
-	b := new(Block)
+func (a *insight) NewBlock(id interface{}) *block {
+	b := new(block)
 	b.insight = a
 	switch v := id.(type) {
 	case int:
@@ -33,7 +33,7 @@ func (a *insight) NewBlock(id interface{}) *Block {
 	return nil
 }
 
-func (b *Block) IsLatest() bool {
+func (b *block) IsLatest() bool {
 	sync := b.insight.Sync()
 	if sync.Height == b.Height {
 		return true
@@ -41,7 +41,7 @@ func (b *Block) IsLatest() bool {
 	return false
 }
 
-func (b *Block) latestBlock() *Block {
+func (b *block) latestBlock() *block {
 	sync := b.insight.Sync()
 	b.Height = sync.Height
 	b.hash()
@@ -50,7 +50,7 @@ func (b *Block) latestBlock() *Block {
 	return b
 }
 
-func (b *Block) Transactions() ([]*blockTx, error) {
+func (b *block) Transactions() ([]*blockTx, error) {
 	var trxs []*blockTx
 	for p := 0; p <= b.Pages; p++ {
 		bTrax, _ := b.blockTransactions(b.Hash, p)
@@ -61,7 +61,7 @@ func (b *Block) Transactions() ([]*blockTx, error) {
 	return trxs, nil
 }
 
-func (b *Block) blockTransactions(hash string, page int) (*blockTransactions, error) {
+func (b *block) blockTransactions(hash string, page int) (*blockTransactions, error) {
 	url := fmt.Sprintf("%v/txs/?block=%v&pageNum=%v", b.insight.Endpoint, hash, page)
 	body, err := httpMethod(url, nil)
 	var block *blockTransactions
@@ -72,7 +72,7 @@ func (b *Block) blockTransactions(hash string, page int) (*blockTransactions, er
 	return block, err
 }
 
-func (b *Block) pages() int {
+func (b *block) pages() int {
 	url := fmt.Sprintf("%v/txs/?block=%v", b.insight.Endpoint, b.Hash)
 	body, _ := httpMethod(url, nil)
 	var blkjson *blockJson
@@ -81,7 +81,7 @@ func (b *Block) pages() int {
 	return blkjson.Pages
 }
 
-func (b *Block) hash() (string, error) {
+func (b *block) hash() (string, error) {
 	url := fmt.Sprintf("%v/block-index/%v", b.insight.Endpoint, b.Height)
 	body, err := httpMethod(url, nil)
 	var hash *blockHash
@@ -90,12 +90,12 @@ func (b *Block) hash() (string, error) {
 	return hash.BlockHash, err
 }
 
-func (b *Block) ToJSON() string {
+func (b *block) ToJSON() string {
 	data, _ := json.Marshal(b)
 	return string(data)
 }
 
-func (b *Block) info() (*blockInformation, error) {
+func (b *block) info() (*blockInformation, error) {
 	url := fmt.Sprintf("%v/block/%v", b.insight.Endpoint, b.Hash)
 	body, err := httpMethod(url, nil)
 	var info *blockInformation

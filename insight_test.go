@@ -11,10 +11,10 @@ const (
 
 var (
 	tester      *insight
-	address     *Address
-	block       *Block
-	block2      *Block
-	latestBlock *Block
+	addr        *address
+	blk         *block
+	block2      *block
+	latestBlock *block
 )
 
 func TestNew(t *testing.T) {
@@ -23,15 +23,15 @@ func TestNew(t *testing.T) {
 }
 
 func TestNewAddress(t *testing.T) {
-	address = tester.NewAddress("1Hz96kJKF2HLPGY15JWLB5m9qGNxvt8tHJ")
-	assert.Equal(t, float64(111.068415688), address.Balance())
+	addr = tester.NewAddress("1Hz96kJKF2HLPGY15JWLB5m9qGNxvt8tHJ")
+	assert.Equal(t, float64(111.068415688), addr.Balance())
 }
 
 func TestNewBlockID(t *testing.T) {
-	block = tester.NewBlock(532895)
-	assert.Equal(t, 532895, block.Height)
-	assert.Equal(t, "000000000000000000093a6e4e1c993d5cb57ff6b2d6dfccdfe77de48de89cd8", block.Hash)
-	assert.Equal(t, 3, block.Pages)
+	blk = tester.NewBlock(532895)
+	assert.Equal(t, 532895, blk.Height)
+	assert.Equal(t, "000000000000000000093a6e4e1c993d5cb57ff6b2d6dfccdfe77de48de89cd8", blk.Hash)
+	assert.Equal(t, 3, blk.Pages)
 }
 
 func TestNewLatestBlock(t *testing.T) {
@@ -49,7 +49,7 @@ func TestNewBlockHash(t *testing.T) {
 }
 
 func TestAddressUTXO(t *testing.T) {
-	utxo := address.UTXO()
+	utxo := addr.UTXO()
 	assert.Equal(t, 11, len(utxo))
 	assert.Equal(t, "0ba99fcc7b9e7b5991394320d59293d66c8d787175c1a0166de90737706a51f1", utxo[0].Txid)
 }
@@ -77,8 +77,8 @@ func TestAddressTransactions(t *testing.T) {
 }
 
 func TestBTCBlockTxs(t *testing.T) {
-	blockTransactions, err := block.Transactions()
+	blockTransactions, err := blk.Transactions()
 	assert.Nil(t, err)
 	assert.Equal(t, 27, len(blockTransactions))
-	assert.NotZero(t, len(block.ToJSON()))
+	assert.NotZero(t, len(blk.ToJSON()))
 }

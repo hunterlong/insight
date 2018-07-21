@@ -5,17 +5,21 @@ import (
 	"fmt"
 )
 
-type Address struct {
+type address struct {
 	insight *insight
-	Address string
+	address string
 	*balancesQuery
 }
 
-func (a *insight) NewAddress(address string) *Address {
-	return &Address{insight: a, Address: address}
+func (a *insight) NewAddress(addr string) *address {
+	return &address{insight: a, address: addr}
 }
 
-func (a *Address) Balance() float64 {
+func (a *address) String() string {
+	return a.address
+}
+
+func (a *address) Balance() float64 {
 	if a.balancesQuery == nil {
 		a.balancesQuery = a.balanceQuery()
 	}
@@ -23,7 +27,7 @@ func (a *Address) Balance() float64 {
 	return btc
 }
 
-func (a *Address) PendingBalance() float64 {
+func (a *address) PendingBalance() float64 {
 	if a.balancesQuery == nil {
 		a.balancesQuery = a.balanceQuery()
 	}
@@ -31,8 +35,8 @@ func (a *Address) PendingBalance() float64 {
 	return btc
 }
 
-func (a *Address) balanceQuery() *balancesQuery {
-	url := fmt.Sprintf("%v/addr/%v", a.insight.Endpoint, a.Address)
+func (a *address) balanceQuery() *balancesQuery {
+	url := fmt.Sprintf("%v/addr/%v", a.insight.Endpoint, a.address)
 	body, err := httpMethod(url, nil)
 	var balance *balancesQuery
 	err = json.Unmarshal(body, &balance)
@@ -43,10 +47,10 @@ func (a *Address) balanceQuery() *balancesQuery {
 	return balance
 }
 
-func (a *Address) UTXO() []*UTXO {
-	url := fmt.Sprintf("%v/addr/%v/utxo", a.insight.Endpoint, a.Address)
+func (a *address) UTXO() []*utxos {
+	url := fmt.Sprintf("%v/addr/%v/utxo", a.insight.Endpoint, a.address)
 	body, err := httpMethod(url, nil)
-	var utxos []*UTXO
+	var utxos []*utxos
 	err = json.Unmarshal(body, &utxos)
 	if err != nil {
 		panic(err)
@@ -54,7 +58,7 @@ func (a *Address) UTXO() []*UTXO {
 	return utxos
 }
 
-func (a *Address) Transactions() []*AddressTxs {
+func (a *address) Transactions() []*AddressTxs {
 	pages := a.txPages()
 	var transactions []*AddressTxs
 	for p := 0; p <= pages; p++ {
@@ -66,10 +70,10 @@ func (a *Address) Transactions() []*AddressTxs {
 	return transactions
 }
 
-func (a *Address) txPages() int {
-	url := fmt.Sprintf("%v/txs?address=%v", a.insight.Endpoint, a.Address)
+func (a *address) txPages() int {
+	url := fmt.Sprintf("%v/txs?address=%v", a.insight.Endpoint, a.address)
 	body, err := httpMethod(url, nil)
-	var txs *AddressTransactions
+	var txs *addressTransactions
 	err = json.Unmarshal(body, &txs)
 	if err != nil {
 		panic(err)
@@ -77,10 +81,10 @@ func (a *Address) txPages() int {
 	return txs.PagesTotal
 }
 
-func (a *Address) transactions(page int) []*AddressTxs {
-	url := fmt.Sprintf("%v/txs?address=%v&pageNum=%v", a.insight.Endpoint, a.Address, page)
+func (a *address) transactions(page int) []*AddressTxs {
+	url := fmt.Sprintf("%v/txs?address=%v&pageNum=%v", a.insight.Endpoint, a.address, page)
 	body, err := httpMethod(url, nil)
-	var txs *AddressTransactions
+	var txs *addressTransactions
 	err = json.Unmarshal(body, &txs)
 	if err != nil {
 		panic(err)
@@ -103,11 +107,7 @@ type balancesQuery struct {
 	Transactions            []string `json:"transactions"`
 }
 
-type UTXOS struct {
-	UTXOs []UTXO
-}
-
-type UTXO struct {
+type utxos struct {
 	Address       string  `json:"address"`
 	Txid          string  `json:"txid"`
 	Vout          int     `json:"vout"`
@@ -118,7 +118,7 @@ type UTXO struct {
 	Confirmations int     `json:"confirmations"`
 }
 
-type AddressTransactions struct {
+type addressTransactions struct {
 	PagesTotal int           `json:"pagesTotal"`
 	Txs        []*AddressTxs `json:"txs"`
 }
