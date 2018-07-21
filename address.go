@@ -11,6 +11,7 @@ type address struct {
 	*balancesQuery
 }
 
+// New Address pointer for Bitcoin Address, includes methods for multiple function
 func (a *insight) NewAddress(addr string) *address {
 	return &address{insight: a, address: addr}
 }

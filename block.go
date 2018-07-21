@@ -12,6 +12,7 @@ type block struct {
 	insight *insight
 }
 
+// New Block pointer that can accept a Hash string, Height ID (int) or nil for latest block
 func (a *insight) NewBlock(id interface{}) *block {
 	b := new(block)
 	b.insight = a
