@@ -12,6 +12,7 @@ type insight struct {
 	Timeout  int
 }
 
+// Create a new Insight pointer for query your database
 func New(endpoint string) *insight {
 	return &insight{Endpoint: endpoint}
 }

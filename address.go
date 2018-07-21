@@ -58,9 +58,9 @@ func (a *address) UTXO() []*utxos {
 	return utxos
 }
 
-func (a *address) Transactions() []*AddressTxs {
+func (a *address) Transactions() []*addressTxs {
 	pages := a.txPages()
-	var transactions []*AddressTxs
+	var transactions []*addressTxs
 	for p := 0; p <= pages; p++ {
 		txs := a.transactions(p)
 		for _, tx := range txs {
@@ -81,7 +81,7 @@ func (a *address) txPages() int {
 	return txs.PagesTotal
 }
 
-func (a *address) transactions(page int) []*AddressTxs {
+func (a *address) transactions(page int) []*addressTxs {
 	url := fmt.Sprintf("%v/txs?address=%v&pageNum=%v", a.insight.Endpoint, a.address, page)
 	body, err := httpMethod(url, nil)
 	var txs *addressTransactions
@@ -120,10 +120,10 @@ type utxos struct {
 
 type addressTransactions struct {
 	PagesTotal int           `json:"pagesTotal"`
-	Txs        []*AddressTxs `json:"txs"`
+	Txs        []*addressTxs `json:"txs"`
 }
 
-type AddressTxs struct {
+type addressTxs struct {
 	Txid     string `json:"txid"`
 	Version  int    `json:"version"`
 	Locktime int    `json:"locktime"`
