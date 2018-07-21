@@ -6,10 +6,11 @@ import (
 )
 
 type block struct {
-	Hash    string
-	Height  int
-	Pages   int
-	insight *insight
+	Hash         string     `json:"hash"`
+	Height       int        `json:"height"`
+	Pages        int        `json:"pages"`
+	insight      *insight   `json:"-"`
+	transactions []*blockTx `json:"transactions"`
 }
 
 // New Block pointer that can accept a Hash string, Height ID (int) or nil for latest block
@@ -47,7 +48,6 @@ func (b *block) latestBlock() *block {
 	b.Height = sync.Height
 	b.hash()
 	b.info()
-
 	return b
 }
 
@@ -59,6 +59,7 @@ func (b *block) Transactions() ([]*blockTx, error) {
 			trxs = append(trxs, tx)
 		}
 	}
+	b.transactions = trxs
 	return trxs, nil
 }
 
